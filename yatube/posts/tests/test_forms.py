@@ -71,7 +71,7 @@ class PostFormsTests(TestCase):
         self.assertRedirects(response, reverse(
             'posts:profile',
             kwargs={'username': self.user.username}))
-        self.assertFalse(
+        self.assertTrue(
             Post.objects.filter(
                 group=self.group.pk,
                 text='Данные из формы',
