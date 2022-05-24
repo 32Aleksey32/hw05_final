@@ -75,7 +75,7 @@ class PostFormsTests(TestCase):
                 group=self.group.pk,
                 text='Данные из формы',
                 image='posts/small.gif'
-                ).exists()
+            ).exists()
         )
 
     def test_post_create_guest_client(self):
