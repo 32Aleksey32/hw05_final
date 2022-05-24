@@ -70,12 +70,12 @@ class PostFormsTests(TestCase):
         self.assertRedirects(response, reverse(
             'posts:profile',
             kwargs={'username': self.user.username}))
-        self.assertTrue(
+        self.assertFalse(
             Post.objects.filter(
                 group=self.group.pk,
                 text='Данные из формы',
                 image='posts/small.gif'
-                ).exists()
+            ).exists()
         )
 
     def test_post_create_guest_client(self):
