@@ -1,5 +1,5 @@
 import shutil
-import tempfile, pathlib
+import tempfile
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -10,13 +10,6 @@ from ..forms import PostForm
 
 User = get_user_model()
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
-
-with tempfile.TemporaryDirectory() as tmp:
-    tmp_dir_name = tmp
-    path_dir = pathlib.Path(tmp)
-    a_file = path_dir / 'small.gif'
-    tmp_dir_name
-    path_dir.exists()
 
 
 class PostFormsTests(TestCase):
@@ -89,7 +82,7 @@ class PostFormsTests(TestCase):
         """Неавторизованный клиент не может создавать посты."""
         form_data = {
             'text': 'Пост от неавторизованного клиента',
-            'group': self.group.id
+            'group': self.group.pk
         }
         self.guest_client.post(
             reverse('posts:post_create'),

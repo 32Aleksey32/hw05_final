@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from django.contrib.auth import get_user_model
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, Client
 from django import forms
 from ..models import Post, Group, Comment, Follow
@@ -248,7 +247,9 @@ class FollowTest(TestCase):
         self.client_auth_following.force_login(self.user_following)
 
     def test_profile_follow(self):
-        """Авторизованный пользователь может подписываться на других пользователей."""
+        """Авторизованный пользователь может
+        подписываться на других пользователей.
+        """
         self.client_auth_follower.get(reverse(
             'posts:profile_follow',
             kwargs={'username': self.user_following.username}))
@@ -256,7 +257,9 @@ class FollowTest(TestCase):
         self.assertEqual(Follow.objects.all().count(), count_follower)
 
     def test_profile_unfollow(self):
-        """Авторизованный пользователь может удалять других пользователей из подписок."""
+        """Авторизованный пользователь может
+        удалять других пользователей из подписок.
+        """
         self.client_auth_follower.get(reverse(
             'posts:profile_unfollow',
             kwargs={'username': self.user_following.username}))
