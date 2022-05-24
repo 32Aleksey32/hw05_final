@@ -1,5 +1,5 @@
 import shutil
-import tempfile
+import tempfile, pathlib
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -10,6 +10,13 @@ from ..forms import PostForm
 
 User = get_user_model()
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
+
+with tempfile.TemporaryDirectory() as tmp:
+    tmp_dir_name = tmp
+    path_dir = pathlib.Path(tmp)
+    a_file = path_dir / 'small.gif'
+    tmp_dir_name
+    path_dir.exists()
 
 
 class PostFormsTests(TestCase):
@@ -27,7 +34,6 @@ class PostFormsTests(TestCase):
             pub_date='Тестовая дата',
             author=cls.user,
             group=cls.group,
-
         )
         cls.form = PostForm()
 
@@ -42,7 +48,7 @@ class PostFormsTests(TestCase):
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def test_post_create_authorized_client(self):
-        """Создается новая запись в базе данных"""
+        """Создается новая запись в базе данных."""
         posts_count = Post.objects.count()
         small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
@@ -76,7 +82,7 @@ class PostFormsTests(TestCase):
                 group=self.group.pk,
                 text='Данные из формы',
                 image='posts/small.gif'
-            ).exists()
+                ).exists()
         )
 
     def test_post_create_guest_client(self):

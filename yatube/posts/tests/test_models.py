@@ -27,13 +27,13 @@ class PostModelTest(TestCase):
         self.assertEqual(expected_object_name, str(group))
 
     def test_symbols(self):
-        """ Проверяем, первые пятнадцать символов поста"""
+        """ Проверяем, первые пятнадцать символов поста."""
         post = PostModelTest.post
         text = post.text[:15]
         self.assertEqual(text, str(post))
 
     def test_verbose_name(self):
-        """Проверяем что verbose_name в полях совпадает с ожидаемым."""
+        """Проверяем, что verbose_name в полях совпадает с ожидаемым."""
         post = PostModelTest.post
         field_verboses = {
             'text': 'Текст поста',

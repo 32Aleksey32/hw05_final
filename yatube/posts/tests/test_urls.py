@@ -46,7 +46,8 @@ class PostURLTests(TestCase):
 
     def test_urls_for_guest(self):
         """Страницы главная, группы, профиль и детальная информация о посте
-         доступны неавторизованному клиенту"""
+        доступны неавторизованному клиенту.
+        """
         url_names = {
             '/',
             f'/group/{self.group.slug}/',
@@ -59,7 +60,7 @@ class PostURLTests(TestCase):
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_create_and_post_edit_for_authorized(self):
-        """Страницы create и post_edit недоступны неавторизованному клиенту"""
+        """Страницы create и post_edit недоступны неавторизованному клиенту."""
         url_names = {
             '/create/',
             f'/posts/{self.post.id}/edit/',
@@ -71,13 +72,15 @@ class PostURLTests(TestCase):
 
     def test_create_url_redirect_guest(self):
         """Страница /create/ перенаправляет неавторизованного клиента
-        на страницу авторизации."""
+        на страницу авторизации.
+        """
         response = self.guest_client.get('/create/')
         self.assertRedirects(response, '/auth/login/?next=/create/')
 
     def test_post_edit_url_redirect_guest(self):
         """Страница posts/post_id/edit/ перенаправляет
-         неавторизованного клиента на страницу авторизации."""
+        неавторизованного клиента на страницу авторизации.
+        """
         response = self.guest_client.get(f'/posts/{self.post.id}/edit/')
         self.assertRedirects(
             response, f'/auth/login/?next=/posts/{self.post.id}/edit/')

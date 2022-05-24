@@ -21,25 +21,11 @@ class PostPagesTests(TestCase):
             slug='test-slug',
             description='Тестовое описание',
         )
-        small_gif = (
-            b'\x47\x49\x46\x38\x39\x61\x02\x00'
-            b'\x01\x00\x80\x00\x00\x00\x00\x00'
-            b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
-            b'\x00\x00\x00\x2C\x00\x00\x00\x00'
-            b'\x02\x00\x01\x00\x00\x02\x02\x0C'
-            b'\x0A\x00\x3B'
-        )
-        uploaded = SimpleUploadedFile(
-            name='small.gif',
-            content=small_gif,
-            content_type='image/gif'
-        )
         cls.post = Post.objects.create(
             text='Тестовый текст',
             pub_date='Тестовая дата',
             author=cls.user,
             group=cls.group,
-            image=uploaded
         )
 
     def setUp(self):
@@ -85,15 +71,11 @@ class PostPagesTests(TestCase):
                 first_object = first_object.context[context]
             else:
                 first_object = first_object.context[context][0]
-            post_text = first_object.text
-            post_author = first_object.author
-            post_group = first_object.group
-            post_image = first_object.image
             posts_dict = {
-                post_text: self.post.text,
-                post_author: self.user,
-                post_group: self.group,
-                post_image: self.post.image
+                first_object.text: self.post.text,
+                first_object.author: self.user,
+                first_object.group: self.group,
+                first_object.image: self.post.image
             }
             for post_param, test_post_param in posts_dict.items():
                 with self.subTest(
@@ -266,8 +248,7 @@ class FollowTest(TestCase):
         self.client_auth_following.force_login(self.user_following)
 
     def test_profile_follow(self):
-        """Авторизованный пользователь может
-         подписываться на других пользователей"""
+        """Авторизованный пользователь может подписываться на других пользователей."""
         self.client_auth_follower.get(reverse(
             'posts:profile_follow',
             kwargs={'username': self.user_following.username}))
@@ -275,8 +256,7 @@ class FollowTest(TestCase):
         self.assertEqual(Follow.objects.all().count(), count_follower)
 
     def test_profile_unfollow(self):
-        """Авторизованный пользователь может
-         удалять других пользователей из подписок"""
+        """Авторизованный пользователь может удалять других пользователей из подписок."""
         self.client_auth_follower.get(reverse(
             'posts:profile_unfollow',
             kwargs={'username': self.user_following.username}))
@@ -284,7 +264,7 @@ class FollowTest(TestCase):
         self.assertEqual(Follow.objects.all().count(), count_follower)
 
     def test_subscription(self):
-        """Новая запись появляется в ленте тех, кто на него подписан"""
+        """Новая запись появляется в ленте тех, кто на него подписан."""
         Follow.objects.create(user=self.user_follower,
                               author=self.user_following)
         response = self.client_auth_follower.get('/follow/')
