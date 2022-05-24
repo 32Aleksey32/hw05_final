@@ -117,6 +117,6 @@ def profile_follow(request, username):
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     follower = Follow.objects.filter(user=request.user, author=author)
-    if request.user != author and not follower.exists():
+    if request.user != author:
         follower.delete()
     return redirect('posts:profile', username=username)
