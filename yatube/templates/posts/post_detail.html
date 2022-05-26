@@ -24,6 +24,9 @@
         <li class="list-group-item">
           <a href="{% url 'posts:profile' post.author.username %}">все посты пользователя</a>
         </li>
+        <li class="list-group-item">
+          <a href="{% url 'posts:post_edit' post.pk  %}">Редактировать</a>
+        </li>
       </ul>
     </aside>
     <article class="col-12 col-md-9">
